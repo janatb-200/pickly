@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -8,6 +9,8 @@ function Login() {
 
   const navigate = useNavigate();
 
+  const { login } = useContext(AuthContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -15,6 +18,8 @@ function Login() {
       setMessage("Please fill in all fields.");
       return;
     }
+
+    login();
 
     setMessage("Login successful!");
 
@@ -26,7 +31,9 @@ function Login() {
   return (
     <div className="login-page">
       <div className="login-box">
-        <div className="login-logo">Pickly</div>
+        <div className="login-logo">
+          Pickly
+        </div>
 
         <h1>Welcome Back</h1>
 

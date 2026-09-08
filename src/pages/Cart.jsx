@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import {
   increaseQuantity,
@@ -8,11 +9,10 @@ import {
 } from "../redux/cartSlice";
 
 function Cart() {
-  const cartItems = useSelector(
-    (state) => state.cart.items
-  );
+  const cartItems = useSelector((state) => state.cart.items);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const totalItems = cartItems.reduce(
     (total, item) => total + item.quantity,
@@ -20,22 +20,17 @@ function Cart() {
   );
 
   const totalPrice = cartItems.reduce(
-    (total, item) =>
-      total + item.price * item.quantity,
+    (total, item) => total + item.price * item.quantity,
     0
   );
 
   return (
     <div className="cart-page">
-      <h1>
-        Shopping Cart
-      </h1>
+      <h1>Shopping Cart</h1>
 
       {cartItems.length === 0 ? (
         <div className="empty-cart">
-          <h2>
-            Your cart is empty
-          </h2>
+          <h2>Your cart is empty</h2>
 
           <p>
             Add some products and they will appear here.
@@ -50,9 +45,7 @@ function Cart() {
             </p>
 
             <button
-              onClick={() =>
-                dispatch(clearCart())
-              }
+              onClick={() => dispatch(clearCart())}
             >
               Clear Cart
             </button>
@@ -70,13 +63,9 @@ function Cart() {
                 />
 
                 <div className="cart-item-info">
-                  <h3>
-                    {item.title}
-                  </h3>
+                  <h3>{item.title}</h3>
 
-                  <p>
-                    ${item.price}
-                  </p>
+                  <p>${item.price}</p>
 
                   <div className="quantity-controls">
                     <button
@@ -127,14 +116,21 @@ function Cart() {
           </div>
 
           <div className="cart-total">
-            <span>
-              Total
-            </span>
+            <span>Total</span>
 
             <strong>
               ${totalPrice.toFixed(2)}
             </strong>
           </div>
+
+          <button
+            className="checkout-button"
+            onClick={() =>
+              navigate("/checkout")
+            }
+          >
+            Proceed to Checkout
+          </button>
         </>
       )}
     </div>

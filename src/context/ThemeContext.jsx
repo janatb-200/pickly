@@ -3,10 +3,21 @@ import { createContext, useState } from "react";
 export const ThemeContext = createContext();
 
 function ThemeProvider({ children }) {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("picklyTheme") === "dark";
+  });
 
   const toggleTheme = () => {
-    setDarkMode(!darkMode);
+    setDarkMode((previousMode) => {
+      const newMode = !previousMode;
+
+      localStorage.setItem(
+        "picklyTheme",
+        newMode ? "dark" : "light"
+      );
+
+      return newMode;
+    });
   };
 
   return (
