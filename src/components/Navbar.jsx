@@ -6,19 +6,25 @@ import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
-  const { darkMode, toggleTheme } = useContext(ThemeContext);
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { darkMode, toggleTheme } =
+    useContext(ThemeContext);
+
+  const { isLoggedIn, logout } =
+    useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const cartItems = useSelector((state) => state.cart.items);
+  const cartItems = useSelector(
+    (state) => state.cart.items
+  );
 
   const wishlistItems = useSelector(
     (state) => state.wishlist.items
   );
 
   const cartCount = cartItems.reduce(
-    (total, item) => total + item.quantity,
+    (total, item) =>
+      total + item.quantity,
     0
   );
 
@@ -29,37 +35,50 @@ function Navbar() {
 
   return (
     <nav>
-      <Link to="/home" className="logo">
+      <Link
+        to={isLoggedIn ? "/home" : "/"}
+        className="logo"
+      >
         Pickly
       </Link>
 
       <div className="nav-links">
-        <Link to="/home">Home</Link>
-
-        <Link to="/products">Products</Link>
-
-        <Link to="/wishlist" className="wishlist-link">
-          Wishlist
-
-          {wishlistItems.length > 0 && (
-            <span className="wishlist-count">
-              {wishlistItems.length}
-            </span>
-          )}
-        </Link>
-
-        <Link to="/cart" className="cart-link">
-          Cart
-
-          {cartCount > 0 && (
-            <span className="cart-count">
-              {cartCount}
-            </span>
-          )}
-        </Link>
-
-        {isLoggedIn && (
+        {isLoggedIn ? (
           <>
+            <Link to="/home">
+              Home
+            </Link>
+
+            <Link to="/products">
+              Products
+            </Link>
+
+            <Link
+              to="/wishlist"
+              className="wishlist-link"
+            >
+              Wishlist
+
+              {wishlistItems.length > 0 && (
+                <span className="wishlist-count">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </Link>
+
+            <Link
+              to="/cart"
+              className="cart-link"
+            >
+              Cart
+
+              {cartCount > 0 && (
+                <span className="cart-count">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
             <Link to="/orders">
               My Orders
             </Link>
@@ -67,25 +86,27 @@ function Navbar() {
             <Link to="/profile">
               My Profile
             </Link>
-          </>
-        )}
 
-        {isLoggedIn ? (
-          <button
-            onClick={handleLogout}
-            className="logout-button"
-          >
-            Logout
-          </button>
+            <button
+              onClick={handleLogout}
+              className="logout-button"
+            >
+              Logout
+            </button>
+          </>
         ) : (
-          <Link to="/">Login</Link>
+          <Link to="/">
+            Login
+          </Link>
         )}
 
         <button
           onClick={toggleTheme}
           className="theme-button"
         >
-          {darkMode ? "☀ Light" : "☾ Dark"}
+          {darkMode
+            ? "☀ Light"
+            : "☾ Dark"}
         </button>
       </div>
     </nav>
