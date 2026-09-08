@@ -1,11 +1,15 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../context/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] =
+    useState(false);
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -14,80 +18,182 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (email.trim() === "" || password.trim() === "") {
-      setMessage("Please fill in all fields.");
+    if (
+      email.trim() === "" ||
+      password.trim() === ""
+    ) {
+      setMessage(
+        "Please enter your email and password."
+      );
+      setIsError(true);
       return;
     }
 
-    login();
+    setIsError(false);
+    setMessage("Welcome back!");
 
-    setMessage("Login successful!");
+    login();
 
     setTimeout(() => {
       navigate("/home");
-    }, 700);
+    }, 600);
   };
 
   return (
     <div className="login-page">
-      <div className="login-box">
-        <div className="login-logo">
-          Pickly
+      <div className="login-decoration login-decoration-one" />
+      <div className="login-decoration login-decoration-two" />
+
+      <div className="login-floating-item login-float-one">
+        🛍️
+      </div>
+
+      <div className="login-floating-item login-float-two">
+        ♡
+      </div>
+
+      <div className="login-floating-item login-float-three">
+        ✦
+      </div>
+
+      <div className="login-container">
+        <div className="login-brand">
+          <div className="login-brand-icon">
+            P
+          </div>
+
+          <span>Pickly</span>
         </div>
 
-        <h1>Welcome Back</h1>
+        <div className="login-intro">
+          <span className="login-label">
+            Welcome to Pickly
+          </span>
 
-        <p>
-          Login to continue shopping with Pickly.
-        </p>
+          <h1>Welcome back</h1>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">
-            Email
-          </label>
+          <p>
+            Sign in to continue discovering products
+            you'll love.
+          </p>
+        </div>
 
-          <input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(event) =>
-              setEmail(event.target.value)
-            }
-          />
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+        >
+          <div className="login-field">
+            <label htmlFor="email">
+              Email Address
+            </label>
 
-          <label htmlFor="password">
-            Password
-          </label>
+            <div className="login-input-wrapper">
+              <span className="login-input-icon">
+                @
+              </span>
 
-          <input
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(event) =>
-              setPassword(event.target.value)
-            }
-          />
+              <input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(event) =>
+                  setEmail(event.target.value)
+                }
+              />
+            </div>
+          </div>
 
-          <label className="remember-row">
-            <input type="checkbox" />
-            Remember me
-          </label>
+          <div className="login-field">
+            <div className="login-password-label">
+              <label htmlFor="password">
+                Password
+              </label>
+            </div>
 
-          <button type="submit">
-            Login
+            <div className="login-input-wrapper">
+              <span className="login-input-icon">
+                ◇
+              </span>
+
+              <input
+                id="password"
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
+                placeholder="Enter your password"
+                value={password}
+                onChange={(event) =>
+                  setPassword(event.target.value)
+                }
+              />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowPassword(
+                    (previous) => !previous
+                  )
+                }
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          {message && (
+            <div
+              className={
+                isError
+                  ? "login-feedback login-error"
+                  : "login-feedback login-success"
+              }
+            >
+              {isError ? "!" : "✓"}
+
+              <span>{message}</span>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="login-submit"
+          >
+            <span>Sign In</span>
+            <span className="login-arrow">
+              →
+            </span>
           </button>
         </form>
 
-        {message && (
-          <p className="login-message">
-            {message}
-          </p>
-        )}
+        <div className="login-divider">
+          <span />
+          <p>SHOP SMARTER WITH PICKLY</p>
+          <span />
+        </div>
 
-        <p className="demo-note">
-          Demo login — enter any email and password.
+        <div className="login-benefits">
+          <div>
+            <span>♡</span>
+            <p>Save favorites</p>
+          </div>
+
+          <div>
+            <span>🛒</span>
+            <p>Smart cart</p>
+          </div>
+
+          <div>
+            <span>✓</span>
+            <p>Easy checkout</p>
+          </div>
+        </div>
+
+        <p className="login-footer-text">
+          Discover. Save. Shop.
         </p>
       </div>
     </div>
